@@ -206,9 +206,10 @@ class SignedSoapClient extends SoapClient
      * @param string $location
      * @param string $action
      * @param int $version
+	 * @param int $one_way
      * @return string
      */
-    function __doRequest($request, $location, $action, $version)
+    function __doRequest($request, $location, $action, $version, $one_way = 0)
     {
         // update request with security headers
         $dom = new DOMDocument('1.0', 'utf-8');
@@ -275,7 +276,10 @@ class SignedSoapClient extends SoapClient
         ));
         $request->setBody($request);
         $request->send();
-        return $request->getResponseBody();
+		
+		if(!$one_way){
+			return $request->getResponseBody();
+		}
     }
 }
 ?>
